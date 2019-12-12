@@ -7,7 +7,8 @@
      findSteps,
      add,
      update,
-     remove
+     remove,
+     addStep
  }
 
  function find() {
@@ -17,6 +18,7 @@
  function findById(id){
      return db('schemes')
      .where({id})
+     .first()
  }
 
  function findSteps(id){
@@ -35,12 +37,27 @@
      })
  }
 
+ function addStep(step, schemeID){
+    return db('steps')
+    .insert(step, schemeID, "id")
+    .then(ids => {
+        const [id] = ids;
+        return db('steps as s')
+        .select('sc.scheme_name as Name', 's.step_number as Step Number',  's.instructions as Instructions')
+        .join("schemes as sc", "s.scheme_id", "sc.id")
+        .where("scheme_id", id)
+    })
+ }
+
+
  function update(changes, id) {
    return db('schemes')
       .where({ id })
-      .update(changes)
+      .update(changes, "id")
       .then(id => {
-          return findById(id)
+          return db('schemes')
+          .where({id})
+          .first()
       });
  }
 

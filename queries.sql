@@ -28,3 +28,10 @@ SELECT Categories.CategoryName, COUNT(products.categoryID) AS NumberOfProducts F
 LEFT JOIN Categories
 ON Categories.CategoryID=Products.CategoryID
 GROUP BY CategoryName;
+
+--Display OrderID and a column called ItemCount that shows the total number of products placed on the order. Shows 196 records.
+
+SELECT OrderDetails.OrderID,COUNT(OrderDetails.ProductID) AS NumberOfItems FROM OrderDetails
+LEFT JOIN Orders
+ON Orders.OrderID=OrderDetails.OrderID
+GROUP BY Orders.OrderID;
