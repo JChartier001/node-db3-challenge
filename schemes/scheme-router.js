@@ -87,16 +87,20 @@ router.put('/:id', (req, res) => {
     if (scheme) {
       Schemes.update(changes, id)
       .then(updatedScheme => {
-        res.json(updatedScheme);
-      });
+        res.status(200).json(updatedScheme);
+      })
+      
     } else {
-      res.status(404).json({ message: 'Could not find scheme with given id' });
+      res.status(404).json({ message: 'Could not find scheme with given id' })
     }
+    
   })
   .catch (err => {
+    console.log(err);
     res.status(500).json({ message: 'Failed to update scheme' });
   });
 });
+
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
